@@ -6,7 +6,6 @@
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QToolButton>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/Qmenu>
 
@@ -14,6 +13,8 @@ QT_BEGIN_NAMESPACE
 
 class Ui_filmoraClass
 {
+private:
+	void setupMenuUi(QWidget *filmoraClass);
 public:
 	QGraphicsView *logo;
 	QPushButton *fileMenuButton;

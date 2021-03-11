@@ -1,3 +1,4 @@
+#pragma execution_character_set("utf-8")
 #include "ui_filmora.h"
 void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 {
@@ -8,18 +9,24 @@ void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 	filmoraClass->resize(1920, 1080);
 	filmoraClass->setMaximumSize(QSize(16777215, 16777215));
 	filmoraClass->setContextMenuPolicy(Qt::DefaultContextMenu);
+	setupMenuUi(filmoraClass);
+	retranslateUi(filmoraClass);
+	QMetaObject::connectSlotsByName(filmoraClass);
+} // setupUi
+
+void Ui_filmoraClass::setupMenuUi(QWidget *filmoraClass)
+{
 	logo = new QGraphicsView(filmoraClass);
 	logo->setObjectName(QString::fromUtf8("logo"));
 	logo->setGeometry(QRect(0, 0, 64, 24));
-
 	fileMenuButton = new QPushButton(filmoraClass);
 	fileMenuButton->setObjectName(QString::fromUtf8("fileMenuButton"));
 	fileMenuButton->setGeometry(QRect(64, 0, 64, 24));
 	fileMenu = new QMenu();
-	QAction *newProjectAction = new QAction(fileMenu);
+	newProjectAction = new QAction(fileMenu);
 	fileMenu->addAction(newProjectAction);
 	fileMenuButton->setMenu(fileMenu);
-	//fileMenuButton->setStyleSheet("QPushButton::menu-indicator{image:None;}");
+	fileMenuButton->setStyleSheet("QPushButton::menu-indicator{image:None;}");
 
 	editMenuButton = new QPushButton(filmoraClass);
 	editMenuButton->setObjectName(QString::fromUtf8("editMenuButton"));
@@ -58,24 +65,22 @@ void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 	maxButton->raise();
 	minButton->raise();
 
-	retranslateUi(filmoraClass);
 	QObject::connect(closeButton, SIGNAL(clicked()), filmoraClass, SLOT(close()));
 	QObject::connect(maxButton, SIGNAL(clicked()), filmoraClass, SLOT(showMaximized()));
 	QObject::connect(minButton, SIGNAL(clicked()), filmoraClass, SLOT(showMinimized()));
-
-	QMetaObject::connectSlotsByName(filmoraClass);
 } // setupUi
 
 void Ui_filmoraClass::retranslateUi(QWidget *filmoraClass)
 {
 	filmoraClass->setWindowTitle(QApplication::translate("filmoraClass", "filmora", nullptr));
-	fileMenuButton->setText(QApplication::translate("filmoraClass", "\346\226\207\344\273\266", nullptr));
-	editMenuButton->setText(QApplication::translate("filmoraClass", "\347\274\226\350\276\221", nullptr));
-	cutMenuButton->setText(QApplication::translate("filmoraClass", "\345\211\252\350\276\221", nullptr));
-	displayMenuButton->setText(QApplication::translate("filmoraClass", "\346\230\276\347\244\272", nullptr));
-	helpMenuButton->setText(QApplication::translate("filmoraClass", "\345\270\256\345\212\251", nullptr));
-	label->setText(QApplication::translate("filmoraClass", "\346\234\252\345\221\275\345\220\215: 00:00:00:00", nullptr));
+	fileMenuButton->setText(QApplication::translate("filmoraClass", "ÎÄ¼þ", nullptr));
+	newProjectAction->setText(QApplication::translate("filmoraClass", "new project", nullptr));
+	editMenuButton->setText(QApplication::translate("filmoraClass", "±à¼­", nullptr));
+	cutMenuButton->setText(QApplication::translate("filmoraClass", "¼ô¼­", nullptr));
+	displayMenuButton->setText(QApplication::translate("filmoraClass", "ÏÔÊ¾", nullptr));
+	helpMenuButton->setText(QApplication::translate("filmoraClass", "°ïÖú", nullptr));
+	label->setText(QApplication::translate("filmoraClass", "Î´ÃüÃû: 00:00:00:00", nullptr));
 	closeButton->setText(QApplication::translate("filmoraClass", "X", nullptr));
-	maxButton->setText(QApplication::translate("filmoraClass", "\345\217\243", nullptr));
+	maxButton->setText(QApplication::translate("filmoraClass", "¿Ú", nullptr));
 	minButton->setText(QApplication::translate("filmoraClass", "-", nullptr));
 } // retranslateUi
