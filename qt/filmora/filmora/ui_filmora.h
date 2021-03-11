@@ -17,9 +17,29 @@ private:
 	void setupMenuUi(QWidget *filmoraClass);
 public:
 	QGraphicsView *logo;
+	//文件菜单按钮
 	QPushButton *fileMenuButton;
 	QMenu *fileMenu;
-	QAction *newProjectAction;
+	QMenu *newProjectMenu;	//新建项目菜单
+	QAction *sixteenColonNine;
+	QAction *oneColonone;
+	QAction *nineColonSixteen;
+	QAction *fourColonThree;
+	QAction *threeColonFour;
+	QAction *twentyoneColonNine;
+	QAction *openProjectAction;	//打开项目
+	QMenu *openLastProjectsMenu; //打开最近项目
+	QList<QAction *> lastProjectActions;
+	QMenu *importMenu;	//导入菜单
+	QAction *importMediaAction;
+	QAction *importFromDirAction;
+	QAction *importFromCorPAction;
+	QAction *importFromHarmlessAction;
+	QMenu *recordMenu;	//录制菜单
+	QAction *recordCameraAction;
+	QAction *recordPCAction;
+	QAction *recordOffscreenAction;
+	//
 	QPushButton *editMenuButton;
 	QPushButton *cutMenuButton;
 	QPushButton *displayMenuButton;
