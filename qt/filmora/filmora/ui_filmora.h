@@ -1,6 +1,6 @@
 #ifndef UI_FILMORA_H
 #define UI_FILMORA_H
-
+#pragma execution_character_set("utf-8")
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGraphicsView>
@@ -8,14 +8,20 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/Qmenu>
+#include <QtWidgets/QBoxlayout>
+#include <QtWidgets/QWidget>
+#include <Qdesktopwidget>
+#include <QPoint>
+#include <QKeyEvent>
+#include <QGraphicsDropShadowEffect>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_filmoraClass
 {
 private:
-	void setupMenuUi(QWidget *filmoraClass);
-public:
+	QWidget *menuLayoutWidget;
+	QHBoxLayout *menuHBoxLayout;
 	QGraphicsView *logo;
 	//文件菜单按钮
 	QPushButton *fileMenuButton;
@@ -48,13 +54,14 @@ public:
 	QPushButton *closeButton;
 	QPushButton *maxButton;
 	QPushButton *minButton;
-
+	void setupMenuUi(QWidget *filmoraClass);
+public: 
 	void setupUi(QWidget *filmoraClass);	// setupUi
 	void retranslateUi(QWidget *filmoraClass);	// retranslateUi
-
 };
 
-namespace Ui {
+namespace Ui 
+{
 	class filmoraClass : public Ui_filmoraClass {};
 } // namespace Ui
 
