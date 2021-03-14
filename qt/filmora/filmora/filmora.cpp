@@ -1,14 +1,14 @@
 #include "filmora.h"
+
 filmora::filmora(QWidget *parent)
 	: QWidget(parent)
 {
 	m_bIsPressed = false;
 	m_bIsResizing = false;
-	m_bIsDoublePressed = false;
 	m_direction = NONE;
 	ui.setupUi(this);
 }
-
+//处理最大化窗口按钮
 void filmora::handleMaxButton()
 {
 	if (windowState() == Qt::WindowMaximized) {
@@ -16,29 +16,49 @@ void filmora::handleMaxButton()
 	}
 	else {
 		showMaximized();
+		setCursor(Qt::ArrowCursor);
 	}
 }
-
+//通用事件监听器
 bool filmora::event(QEvent *event)
 {
-	if (event->type() == QEvent::HoverMove) {
+	//非最大化窗口时检测鼠标移动事件
+	if (windowState() != Qt::WindowMaximized && event->type() == QEvent::HoverMove) {
 		QHoverEvent *hoverEvent = static_cast<QHoverEvent *>(event);
 		QMouseEvent mouseEvent(QEvent::MouseMove, hoverEvent->pos(),
 			Qt::NoButton, Qt::NoButton, Qt::NoModifier);
 		mouseMoveEvent(&mouseEvent);
+	}
+	//双击放大、缩小
+	if (windowState() == Qt::WindowMaximized && event->type() == QMouseEvent::MouseButtonDblClick) {
+		QRect mainRect = geometry();
+		QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+		int marginTop = mouseEvent->globalY() - mainRect.y();
+		if (marginTop <= 24) {
+			showNormal();
+		}
+	}
+	else if (windowState() != Qt::WindowMaximized && event->type() == QMouseEvent::MouseButtonDblClick) {
+		QRect mainRect = geometry();
+		QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+		int marginTop = mouseEvent->globalY() - mainRect.y();
+		if (marginTop <= 24) {
+			showMaximized();
+		}
 	}
 	return QWidget::event(event);
 }
 //按压事件
 void filmora::mousePressEvent(QMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton) {
+	//非最大化窗口时检测鼠标按压事件
+	if (windowState() != Qt::WindowMaximized && event->button() == Qt::LeftButton) {
 		m_bIsPressed = true;
 		m_pressPoint = event->globalPos();
 	}
 	return QWidget::mousePressEvent(event);
 }
-//拖动窗口
+//拖动事件
 void filmora::mouseMoveEvent(QMouseEvent *event)
 {
 	if (m_bIsPressed) {
@@ -47,13 +67,6 @@ void filmora::mouseMoveEvent(QMouseEvent *event)
 			m_pressPoint += m_movePoint;
 		}
 		else {
-			if (!m_bIsDoublePressed && windowState() == Qt::WindowMaximized) {
-				showNormal();
-				QPointF point(width() * ((double)(event->globalPos().x()) / QApplication::desktop()->width()),
-					height() * ((double)(event->globalPos().y()) / QApplication::desktop()->height()));
-				move(event->globalPos() - point.toPoint());
-				m_pressPoint = event->globalPos();
-			}
 			QPoint point = event->globalPos() - m_pressPoint;
 			move(pos() + point);
 			m_pressPoint = event->globalPos();
@@ -64,7 +77,7 @@ void filmora::mouseMoveEvent(QMouseEvent *event)
 	}
 	QWidget::mouseMoveEvent(event);
 }
-//更新大小
+//判断放缩方向并调用更新大小函数
 void filmora::updateRegion(QMouseEvent *event)
 {
 	QRect mainRect;
@@ -130,7 +143,7 @@ void filmora::updateRegion(QMouseEvent *event)
 		resizeRegion(marginTop, marginBottom, marginLeft, marginRight);
 	}
 }
-//重新设置大小
+//更新大小
 void filmora::resizeRegion(int marginTop, int marginBottom, int marginLeft, int marginRight)
 {
 	if (m_bIsPressed) {
@@ -201,7 +214,6 @@ void filmora::mouseReleaseEvent(QMouseEvent *event)
 	if (event->button() == Qt::LeftButton) {
 		m_bIsPressed = false;
 		m_bIsResizing = false;
-		m_bIsDoublePressed = false;
 		this->setGraphicsEffect(nullptr);
 	}
 	QWidget::mouseReleaseEvent(event);
@@ -210,12 +222,6 @@ void filmora::mouseReleaseEvent(QMouseEvent *event)
 void filmora::leaveEvent(QEvent *event)
 {
 	m_bIsPressed = false;
-	m_bIsDoublePressed = false;
 	m_bIsResizing = false;
 	QWidget::leaveEvent(event);
 }
-
-
-
-
-

@@ -1,25 +1,48 @@
 #include "ui_filmora.h"
+
+//设置UI
 void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 {
 	filmoraClass->setWindowModality(Qt::NonModal);
 	filmoraClass->setEnabled(true);
 	filmoraClass->resize(960, 640);
 	filmoraClass->setMaximumSize(QSize(16777215, 16777215));
-	filmoraClass->setContextMenuPolicy(Qt::DefaultContextMenu);
+	//设置基础布局
+	mainLayoutWidget = new QWidget(filmoraClass);
+	mainLayout = new QGridLayout(mainLayoutWidget);
+	mainLayout->setContentsMargins(0, 0, 0, 0);
+	menuLayout = new QHBoxLayout();
+	menuLayout->setSpacing(0);
+	mainLayout->addLayout(menuLayout, 0, 0);
+	resLayout = new QHBoxLayout();
+	mainLayout->addLayout(resLayout, 1, 0);
+	videoLayout = new QHBoxLayout();
+	mainLayout->addLayout(videoLayout, 1, 1);
+	timeLayout = new QHBoxLayout();
+	mainLayout->addLayout(timeLayout, 2, 0);
+	mainLayout->setRowStretch(0, 1);
+	mainLayout->setRowStretch(1, 25);
+	mainLayout->setRowStretch(2, 25);
+	//设置菜单UI
 	setupMenuUi(filmoraClass);
+	//为主窗口设置主布局
+	filmoraClass->setLayout(mainLayout);
 	retranslateUi(filmoraClass);
 	QMetaObject::connectSlotsByName(filmoraClass);
-} // setupUi
+}
 
+//设置菜单UI
 void Ui_filmoraClass::setupMenuUi(QWidget *filmoraClass)
 {
-	menuLayoutWidget = new QWidget(filmoraClass);
-	//menuLayoutWidget->setGeometry(QRect(-1, -1, 960, 25));
-	menuHBoxLayout = new QHBoxLayout(menuLayoutWidget);
-	menuHBoxLayout->setContentsMargins(0, 0, 0, 0);
-	logo = new QGraphicsView(menuLayoutWidget);
+	//logo
+	logo = new QLabel(mainLayoutWidget);
+	logo->setObjectName(QString("logo"));
+	logo->setFixedSize(64, 24);
+	logo->setPixmap(QPixmap("D:\\file\\wondershare\\qt\\filmora\\filmora\\filmora.png"));
+	menuLayout->addWidget(logo);
 	//文件菜单按钮
-	fileMenuButton = new QPushButton(menuLayoutWidget);
+	fileMenuButton = new QPushButton(mainLayoutWidget);
+	fileMenuButton->setFixedSize(64, 24);
 	fileMenu = new QMenu();
 	newProjectMenu = new QMenu(fileMenu);	//新建项目
 	sixteenColonNine = new QAction(newProjectMenu);
@@ -60,34 +83,49 @@ void Ui_filmoraClass::setupMenuUi(QWidget *filmoraClass)
 	recordMenu->addAction(recordPCAction);
 	recordMenu->addAction(recordOffscreenAction);
 	fileMenu->addMenu(recordMenu);
-	//
+	//TODO
 	fileMenuButton->setMenu(fileMenu);
-	fileMenuButton->setStyleSheet("QPushButton::menu-indicator{image:None;}");
+	menuLayout->addWidget(fileMenuButton);
+	//编辑菜单按钮
+	editMenuButton = new QPushButton(mainLayoutWidget);
+	editMenuButton->setFixedSize(64, 24);
+	menuLayout->addWidget(editMenuButton);
+	//剪辑菜单按钮
+	cutMenuButton = new QPushButton(mainLayoutWidget);
+	cutMenuButton->setFixedSize(64, 24);
+	menuLayout->addWidget(cutMenuButton);
+	//展示菜单按钮
+	displayMenuButton = new QPushButton(mainLayoutWidget);
+	displayMenuButton->setFixedSize(64, 24);
+	menuLayout->addWidget(displayMenuButton);
+	//帮助菜单按钮
+	helpMenuButton = new QPushButton(mainLayoutWidget);
+	helpMenuButton->setFixedSize(64, 24);
+	menuLayout->addWidget(helpMenuButton);
+	//文件名
+	menuLayout->addStretch(1);
+	label = new QLabel(mainLayoutWidget);
+	label->setFixedSize(128, 24);
+	menuLayout->addWidget(label);
+	menuLayout->addStretch(1);
+	//最小化按钮
+	minButton = new QPushButton(mainLayoutWidget);
+	minButton->setFixedSize(24, 24);
+	menuLayout->addWidget(minButton);
+	//最大化按钮
+	maxButton = new QPushButton(mainLayoutWidget);
+	maxButton->setFixedSize(24, 24);
+	menuLayout->addWidget(maxButton);
+	//关闭按钮
+	closeButton = new QPushButton(mainLayoutWidget);
+	closeButton->setFixedSize(24, 24);
+	menuLayout->addWidget(closeButton);
 
-	editMenuButton = new QPushButton(menuLayoutWidget);
-	cutMenuButton = new QPushButton(menuLayoutWidget);
-	displayMenuButton = new QPushButton(menuLayoutWidget);
-	helpMenuButton = new QPushButton(menuLayoutWidget);
-	label = new QLabel(menuLayoutWidget);
-	minButton = new QPushButton(menuLayoutWidget);
-	maxButton = new QPushButton(menuLayoutWidget);
-	closeButton = new QPushButton(menuLayoutWidget);
-	menuHBoxLayout->addWidget(logo, Qt::AlignLeft);
-	menuHBoxLayout->addWidget(fileMenuButton, Qt::AlignLeft);
-	menuHBoxLayout->addWidget(editMenuButton, Qt::AlignLeft);
-	menuHBoxLayout->addWidget(cutMenuButton, Qt::AlignLeft);
-	menuHBoxLayout->addWidget(displayMenuButton, Qt::AlignLeft);
-	menuHBoxLayout->addWidget(helpMenuButton, Qt::AlignLeft);
-	menuHBoxLayout->addWidget(label, Qt::AlignCenter);
-	menuHBoxLayout->addWidget(minButton, Qt::AlignRight);
-	menuHBoxLayout->addWidget(maxButton, Qt::AlignRight);
-	menuHBoxLayout->addWidget(closeButton, Qt::AlignRight);
-	menuHBoxLayout->setGeometry(QRect(-1, -1, 1920, 25));
 	QObject::connect(closeButton, SIGNAL(clicked()), filmoraClass, SLOT(close()));
 	QObject::connect(maxButton, SIGNAL(clicked()), filmoraClass, SLOT(handleMaxButton()));
 	QObject::connect(minButton, SIGNAL(clicked()), filmoraClass, SLOT(showMinimized()));
 	
-} // setupUi
+}
 
 void Ui_filmoraClass::retranslateUi(QWidget *filmoraClass)
 {

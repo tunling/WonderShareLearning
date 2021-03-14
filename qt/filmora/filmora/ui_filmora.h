@@ -1,6 +1,6 @@
+#pragma execution_character_set("utf-8")	//设置utf-8编码，防止中文乱码
 #ifndef UI_FILMORA_H
 #define UI_FILMORA_H
-#pragma execution_character_set("utf-8")
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGraphicsView>
@@ -14,15 +14,27 @@
 #include <QPoint>
 #include <QKeyEvent>
 #include <QGraphicsDropShadowEffect>
+#include <Qmessagebox>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_filmoraClass
 {
 private:
-	QWidget *menuLayoutWidget;
-	QHBoxLayout *menuHBoxLayout;
-	QGraphicsView *logo;
+	//主布局
+	QGridLayout *mainLayout;	
+	//主Widget
+	QWidget *mainLayoutWidget;
+	//菜单布局
+	QHBoxLayout *menuLayout;
+	//资源管理器布局
+	QHBoxLayout *resLayout;
+	//视频播放器布局
+	QHBoxLayout *videoLayout;
+	//时间线布局
+	QHBoxLayout *timeLayout;
+	//软件logo
+	QLabel *logo;
 	//文件菜单按钮
 	QPushButton *fileMenuButton;
 	QMenu *fileMenu;
@@ -45,7 +57,7 @@ private:
 	QAction *recordCameraAction;
 	QAction *recordPCAction;
 	QAction *recordOffscreenAction;
-	//
+	//TODO
 	QPushButton *editMenuButton;
 	QPushButton *cutMenuButton;
 	QPushButton *displayMenuButton;
@@ -56,8 +68,9 @@ private:
 	QPushButton *minButton;
 	void setupMenuUi(QWidget *filmoraClass);
 public: 
-	void setupUi(QWidget *filmoraClass);	// setupUi
-	void retranslateUi(QWidget *filmoraClass);	// retranslateUi
+	//设置UI
+	void setupUi(QWidget *filmoraClass);
+	void retranslateUi(QWidget *filmoraClass);
 };
 
 namespace Ui 
