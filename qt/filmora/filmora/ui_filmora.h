@@ -15,7 +15,6 @@
 #include <QKeyEvent>
 #include <QGraphicsDropShadowEffect>
 #include <Qmessagebox>
-
 QT_BEGIN_NAMESPACE
 
 class Ui_filmoraClass

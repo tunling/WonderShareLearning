@@ -11,6 +11,7 @@ void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 	mainLayoutWidget = new QWidget(filmoraClass);
 	mainLayout = new QGridLayout(mainLayoutWidget);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
+	filmoraClass->setLayout(mainLayout);
 	menuLayout = new QHBoxLayout();
 	menuLayout->setSpacing(0);
 	mainLayout->addLayout(menuLayout, 0, 0);
@@ -25,8 +26,6 @@ void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 	mainLayout->setRowStretch(2, 25);
 	//设置菜单UI
 	setupMenuUi(filmoraClass);
-	//为主窗口设置主布局
-	filmoraClass->setLayout(mainLayout);
 	retranslateUi(filmoraClass);
 	QMetaObject::connectSlotsByName(filmoraClass);
 }
@@ -83,7 +82,7 @@ void Ui_filmoraClass::setupMenuUi(QWidget *filmoraClass)
 	recordMenu->addAction(recordPCAction);
 	recordMenu->addAction(recordOffscreenAction);
 	fileMenu->addMenu(recordMenu);
-	//TODO
+	//--------------TODO
 	fileMenuButton->setMenu(fileMenu);
 	menuLayout->addWidget(fileMenuButton);
 	//编辑菜单按钮
@@ -122,6 +121,7 @@ void Ui_filmoraClass::setupMenuUi(QWidget *filmoraClass)
 	menuLayout->addWidget(closeButton);
 
 	QObject::connect(closeButton, SIGNAL(clicked()), filmoraClass, SLOT(close()));
+	//交由filmoraClass处理最大化按钮功能
 	QObject::connect(maxButton, SIGNAL(clicked()), filmoraClass, SLOT(handleMaxButton()));
 	QObject::connect(minButton, SIGNAL(clicked()), filmoraClass, SLOT(showMinimized()));
 	
@@ -149,7 +149,7 @@ void Ui_filmoraClass::retranslateUi(QWidget *filmoraClass)
 	recordCameraAction->setText(QApplication::translate("filmoraClass", "录制摄像头", nullptr));
 	recordPCAction->setText(QApplication::translate("filmoraClass", "录制电脑屏幕", nullptr));
 	recordOffscreenAction->setText(QApplication::translate("filmoraClass", "录制画外音", nullptr));
-	//
+	//-----------------TODO
 	editMenuButton->setText(QApplication::translate("filmoraClass", "编辑", nullptr));
 	cutMenuButton->setText(QApplication::translate("filmoraClass", "剪辑", nullptr));
 	displayMenuButton->setText(QApplication::translate("filmoraClass", "显示", nullptr));

@@ -81,10 +81,8 @@ void filmora::mouseMoveEvent(QMouseEvent *event)
 void filmora::updateRegion(QMouseEvent *event)
 {
 	QRect mainRect;
-	int marginTop;
-	int marginBottom;
-	int marginLeft;
-	int marginRight;
+	//分别记录鼠标离窗口上下左右边缘的距离，在调整窗口过程中时不计算值
+	int marginTop, marginBottom, marginLeft, marginRight;
 	if (!m_bIsResizing) {
 		mainRect = geometry();
 		marginTop = event->globalY() - mainRect.y();

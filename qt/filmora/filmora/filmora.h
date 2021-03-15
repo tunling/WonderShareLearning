@@ -18,11 +18,16 @@ public:
 	void leaveEvent(QEvent *event);
 private:
 	Ui::filmoraClass ui;
+	//枚举类型，用于设置放缩窗口方向
 	enum direction { BOTTOMRIGHT, TOPRIGHT, TOPLEFT, BOTTOMLEFT, DOWN, LEFT, RIGHT, UP, NONE };
-	bool m_bIsPressed;
-	bool m_bIsResizing;
 	direction m_direction;
+	//记录是否按压
+	bool m_bIsPressed;
+	//记录是否正在调整窗口
+	bool m_bIsResizing;
+	//记录按压点
 	QPoint m_pressPoint;
+	//记录移动点
 	QPoint m_movePoint;
 private slots:
 	//处理最大化窗口按钮
