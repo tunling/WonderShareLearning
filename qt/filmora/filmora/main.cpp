@@ -4,7 +4,7 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	//¶ÁÈ¡QSSÎÄ¼þ
-	QFile file("D:\\file\\wondershare\\qt\\filmora\\filmora\\wqss.qss");
+	QFile file("wqss.qss");
 	if (file.open(QFile::ReadOnly)) {
 		QString styleSheet = QLatin1String(file.readAll());
 		a.setStyleSheet(styleSheet);
