@@ -38,7 +38,7 @@ void Ui_filmoraClass::setupMenuUi(QWidget *filmoraClass)
 	logo = new QLabel(mainLayoutWidget);
 	logo->setObjectName(QString("logo"));
 	logo->setFixedSize(64, 24);
-	logo->setPixmap(QPixmap("D:\\file\\wondershare\\qt\\filmora\\filmora\\filmora.png"));
+	logo->setPixmap(QPixmap("filmora.png"));
 	menuLayout->addWidget(logo);
 	//文件菜单按钮
 	fileMenuButton = new QPushButton(mainLayoutWidget);
