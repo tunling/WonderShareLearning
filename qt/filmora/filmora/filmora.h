@@ -18,15 +18,15 @@ public:
 
 private:
 	Ui::filmoraClass ui;
-	//枚举类型，用于设置放缩窗口方向
+	// 枚举类型，用于设置放缩窗口方向
 	enum direction { BOTTOMRIGHT, TOPRIGHT, TOPLEFT, BOTTOMLEFT, DOWN, LEFT, RIGHT, UP, NONE };	
 	direction	m_direction;	
-	bool		m_bIsPressed;	//记录是否按压
-	bool		m_bIsResizing;	//记录是否正在调整窗口
-	QPoint		m_pressPoint;	//记录按压点
-	QPoint		m_movePoint;	//记录移动点
+	bool		m_bIsPressed;	// 记录是否按压
+	bool		m_bIsResizing;	// 记录是否正在调整窗口
+	QPoint		m_pressPoint;	// 记录按压点
+	QPoint		m_movePoint;	// 记录移动点
 
 private slots:
-	//处理最大化窗口按钮
+	// 处理最大化窗口按钮
 	void		handleMaxButton();
 };

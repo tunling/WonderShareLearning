@@ -9,7 +9,7 @@ filmora::filmora(QWidget *parent)
 	ui.setupUi(this);
 }
 
-//处理最大化窗口按钮
+
 void filmora::handleMaxButton()
 {
 	if (windowState() == Qt::WindowMaximized)
@@ -21,12 +21,12 @@ void filmora::handleMaxButton()
 		showMaximized();
 		setCursor(Qt::ArrowCursor);
 	}
-}
+}// 处理最大化窗口按钮
 
-//通用事件监听器
+
 bool filmora::event(QEvent *event)
 {
-	//非最大化窗口时检测鼠标移动事件
+	// 非最大化窗口时检测鼠标移动事件
 	if (windowState() != Qt::WindowMaximized && event->type() == QEvent::HoverMove) 
 	{
 		QHoverEvent *hoverEvent = static_cast<QHoverEvent *>(event);
@@ -35,7 +35,7 @@ bool filmora::event(QEvent *event)
 		mouseMoveEvent(&mouseEvent);
 	}
 
-	//双击放大、缩小
+	// 双击放大、缩小
 	if (windowState() == Qt::WindowMaximized && event->type() == QMouseEvent::MouseButtonDblClick) 
 	{
 		QRect mainRect = geometry();
@@ -59,10 +59,9 @@ bool filmora::event(QEvent *event)
 	return QWidget::event(event);
 }
 
-//按压事件
 void filmora::mousePressEvent(QMouseEvent *event)
 {
-	//非最大化窗口时检测鼠标按压事件
+	// 非最大化窗口时检测鼠标按压事件
 	if (windowState() != Qt::WindowMaximized && event->button() == Qt::LeftButton) 
 	{
 		m_bIsPressed = true;
@@ -71,7 +70,6 @@ void filmora::mousePressEvent(QMouseEvent *event)
 	return QWidget::mousePressEvent(event);
 }
 
-//拖动事件
 void filmora::mouseMoveEvent(QMouseEvent *event)
 {
 	if (m_bIsPressed) 
@@ -95,11 +93,11 @@ void filmora::mouseMoveEvent(QMouseEvent *event)
 	QWidget::mouseMoveEvent(event);
 }
 
-//判断放缩方向并调用更新大小函数
+
 void filmora::updateRegion(QMouseEvent *event)
 {
 	QRect mainRect;
-	//分别记录鼠标离窗口上下左右边缘的距离，在调整窗口过程中时不计算值
+	// 分别记录鼠标离窗口上下左右边缘的距离，在调整窗口过程中时不计算值
 	int marginTop, marginBottom, marginLeft, marginRight;
 
 	if (!m_bIsResizing) 
@@ -172,9 +170,8 @@ void filmora::updateRegion(QMouseEvent *event)
 		m_bIsResizing = true;
 		resizeRegion(marginTop, marginBottom, marginLeft, marginRight);
 	}
-}
+}// 判断放缩方向并调用更新大小函数
 
-//更新大小
 void filmora::resizeRegion(int marginTop, int marginBottom, int marginLeft, int marginRight)
 {
 	if (m_bIsPressed) 
@@ -246,9 +243,8 @@ void filmora::resizeRegion(int marginTop, int marginBottom, int marginLeft, int 
 		m_bIsResizing = false;
 		m_direction = NONE;
 	}
-}
+}// 更新大小
 
-//释放事件
 void filmora::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton) 
@@ -260,7 +256,6 @@ void filmora::mouseReleaseEvent(QMouseEvent *event)
 	QWidget::mouseReleaseEvent(event);
 }
 
-//离开事件
 void filmora::leaveEvent(QEvent *event)
 {
 	m_bIsPressed = false;
