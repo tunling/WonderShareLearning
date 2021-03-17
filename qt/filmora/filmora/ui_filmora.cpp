@@ -7,31 +7,38 @@ void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 	filmoraClass->setEnabled(true);
 	filmoraClass->resize(960, 640);
 	filmoraClass->setMaximumSize(QSize(16777215, 16777215));
-
+	
 	// 设置基础布局
 	mainLayoutWidget	= new QWidget(filmoraClass);
-	mainLayout			= new QGridLayout(mainLayoutWidget);
-	mainLayout->setContentsMargins(0, 0, 0, 0);
+	mainLayout			= new QVBoxLayout(mainLayoutWidget);
 	filmoraClass->setLayout(mainLayout);
+	mainLayout->setContentsMargins(0, 0, 0, 0);
+	mainLayout->setStretch(0, 1);
+	mainLayout->setStretch(1, 25);
+	mainLayout->setStretch(2, 25);
 
 	menuLayout	= new QHBoxLayout();
+	mainLayout->addLayout(menuLayout);
+	setupMenuUi(filmoraClass);	//设置菜单UI
 	menuLayout->setSpacing(0);
-	mainLayout->addLayout(menuLayout, 0, 0);
+	
+	resAndVideoHLayout = new QHBoxLayout();
+	mainLayout->addLayout(resAndVideoHLayout);
+	resAndVideoHLayout->setStretch(0, 1);
+	resAndVideoHLayout->setStretch(1, 1);
 
-	resLayout	= new QHBoxLayout();
-	mainLayout->addLayout(resLayout, 1, 0);
+	resLayout	= new QGridLayout();
+	resAndVideoHLayout->addLayout(resLayout);
+	setupResUi(filmoraClass);
+	
+	videoLayout = new QGridLayout();
+	resAndVideoHLayout->addLayout(videoLayout);
+	setupVideoUi(filmoraClass);
 
-	videoLayout = new QHBoxLayout();
-	mainLayout->addLayout(videoLayout, 1, 1);
+	timeLayout	= new QGridLayout();
+	mainLayout->addLayout(timeLayout);
+	setupTimeUi(filmoraClass);
 
-	timeLayout	= new QHBoxLayout();
-	mainLayout->addLayout(timeLayout, 2, 0);
-	mainLayout->setRowStretch(0, 1);
-	mainLayout->setRowStretch(1, 25);
-	mainLayout->setRowStretch(2, 25);
-
-	//设置菜单UI
-	setupMenuUi(filmoraClass);
 	retranslateUi(filmoraClass);
 
 	QMetaObject::connectSlotsByName(filmoraClass);
@@ -42,115 +49,138 @@ void Ui_filmoraClass::setupMenuUi(QWidget *filmoraClass)
 {
 	// logo
 	logo = new QLabel(mainLayoutWidget);
+	menuLayout->addWidget(logo);
 	logo->setObjectName(QString("logo"));
 	logo->setFixedSize(64, 24);
 	logo->setPixmap(QPixmap("filmora.png"));
-	menuLayout->addWidget(logo);
 
 	// 文件菜单按钮
-	fileMenu			= new QMenu();
 	fileMenuButton		= new QPushButton(mainLayoutWidget);
+	menuLayout->addWidget(fileMenuButton);
 	fileMenuButton->setFixedSize(64, 24);
+	fileMenu = new QMenu();
+	fileMenuButton->setMenu(fileMenu);
 	
 	newProjectMenu		= new QMenu(fileMenu);	// 新建项目
-	sixteenColonNine	= new QAction(newProjectMenu);
-	oneColonone			= new QAction(newProjectMenu);
-	nineColonSixteen	= new QAction(newProjectMenu);
-	fourColonThree		= new QAction(newProjectMenu);
-	threeColonFour		= new QAction(newProjectMenu);
-	twentyoneColonNine	= new QAction(newProjectMenu);
-	newProjectMenu->addAction(sixteenColonNine);
-	newProjectMenu->addAction(oneColonone);
-	newProjectMenu->addAction(nineColonSixteen);
-	newProjectMenu->addAction(fourColonThree);
-	newProjectMenu->addAction(threeColonFour);
-	newProjectMenu->addAction(twentyoneColonNine);
 	fileMenu->addMenu(newProjectMenu);
-
+	sixteenColonNine	= new QAction(newProjectMenu);
+	newProjectMenu->addAction(sixteenColonNine);
+	oneColonone			= new QAction(newProjectMenu);
+	newProjectMenu->addAction(oneColonone);
+	nineColonSixteen	= new QAction(newProjectMenu);
+	newProjectMenu->addAction(nineColonSixteen);
+	fourColonThree		= new QAction(newProjectMenu);
+	newProjectMenu->addAction(fourColonThree);
+	threeColonFour		= new QAction(newProjectMenu);
+	newProjectMenu->addAction(threeColonFour);
+	twentyoneColonNine	= new QAction(newProjectMenu);
+	newProjectMenu->addAction(twentyoneColonNine);
+	
 	openProjectAction	 = new QAction(fileMenu);	// 打开项目
 	fileMenu->addAction(openProjectAction);
-
+	
 	openLastProjectsMenu = new QMenu(fileMenu);	// 打开最近使用的内容
+	fileMenu->addMenu(openLastProjectsMenu);
 	openLastProjectsMenu->addActions(lastProjectActions);
 	openLastProjectsMenu->setDisabled(true);
 
-	
-	fileMenu->addMenu(openLastProjectsMenu);
 	fileMenu->addSeparator();
 
 	importMenu					= new QMenu(fileMenu);	// 导入菜单
-	importMediaAction			= new QAction(importMenu);
-	importFromDirAction			= new QAction(importMenu);
-	importFromCorPAction		= new QAction(importMenu);
-	importFromHarmlessAction	= new QAction(importMenu);
-	importMenu->addAction(importMediaAction);
-	importMenu->addAction(importFromDirAction);
-	importMenu->addAction(importFromCorPAction);
-	importMenu->addAction(importFromHarmlessAction);
 	fileMenu->addMenu(importMenu);
-
+	importMediaAction			= new QAction(importMenu);
+	importMenu->addAction(importMediaAction);
+	importFromDirAction			= new QAction(importMenu);
+	importMenu->addAction(importFromDirAction);
+	importFromCorPAction		= new QAction(importMenu);
+	importMenu->addAction(importFromCorPAction);
+	importFromHarmlessAction	= new QAction(importMenu);
+	importMenu->addAction(importFromHarmlessAction);
+	
 	recordMenu				= new QMenu(fileMenu);	// 录制菜单
-	recordCameraAction		= new QAction(recordMenu);
-	recordPCAction			= new QAction(recordMenu);
-	recordOffscreenAction	= new QAction(recordMenu);
-	recordMenu->addAction(recordCameraAction);
-	recordMenu->addAction(recordPCAction);
-	recordMenu->addAction(recordOffscreenAction);
 	fileMenu->addMenu(recordMenu);
-
+	recordCameraAction		= new QAction(recordMenu);
+	recordMenu->addAction(recordCameraAction);
+	recordPCAction			= new QAction(recordMenu);
+	recordMenu->addAction(recordPCAction);
+	recordOffscreenAction	= new QAction(recordMenu);
+	recordMenu->addAction(recordOffscreenAction);
+	
 	// --------------TODO
-	fileMenuButton->setMenu(fileMenu);
-	menuLayout->addWidget(fileMenuButton);
-
+	
 	// 编辑菜单按钮
 	editMenuButton		= new QPushButton(mainLayoutWidget);
-	editMenuButton->setFixedSize(64, 24);
 	menuLayout->addWidget(editMenuButton);
+	editMenuButton->setFixedSize(64, 24);
 
 	// 剪辑菜单按钮
 	cutMenuButton		= new QPushButton(mainLayoutWidget);
-	cutMenuButton->setFixedSize(64, 24);
 	menuLayout->addWidget(cutMenuButton);
-
+	cutMenuButton->setFixedSize(64, 24);
+	
 	// 展示菜单按钮
 	displayMenuButton	= new QPushButton(mainLayoutWidget);
-	displayMenuButton->setFixedSize(64, 24);
 	menuLayout->addWidget(displayMenuButton);
+	displayMenuButton->setFixedSize(64, 24);
 
 	// 帮助菜单按钮
 	helpMenuButton		= new QPushButton(mainLayoutWidget);
-	helpMenuButton->setFixedSize(64, 24);
 	menuLayout->addWidget(helpMenuButton);
-
+	helpMenuButton->setFixedSize(64, 24);
+	
 	// 文件名
 	menuLayout->addStretch(1);
 	label				= new QLabel(mainLayoutWidget);
-	label->setFixedSize(128, 24);
 	menuLayout->addWidget(label);
+	label->setFixedSize(128, 24);
 	menuLayout->addStretch(1);
 
 	// 最小化按钮
 	minButton			= new QPushButton(mainLayoutWidget);
-	minButton->setFixedSize(24, 24);
 	menuLayout->addWidget(minButton);
-
+	minButton->setFixedSize(24, 24);
+	
 	// 最大化按钮
 	maxButton			= new QPushButton(mainLayoutWidget);
-	maxButton->setFixedSize(24, 24);
 	menuLayout->addWidget(maxButton);
-
+	maxButton->setFixedSize(24, 24);
+	
 	// 关闭按钮
 	closeButton			= new QPushButton(mainLayoutWidget);
-	closeButton->setFixedSize(24, 24);
 	menuLayout->addWidget(closeButton);
-
+	closeButton->setFixedSize(24, 24);
+	
 
 	QObject::connect(closeButton, SIGNAL(clicked()), filmoraClass, SLOT(close()));
 	// 交由filmoraClass处理最大化按钮功能
 	QObject::connect(maxButton, SIGNAL(clicked()), filmoraClass, SLOT(handleMaxButton()));
 	QObject::connect(minButton, SIGNAL(clicked()), filmoraClass, SLOT(showMinimized()));
 	
-}// 设置菜单UI
+}
+
+void Ui_filmoraClass::setupResUi(QWidget *filmoraClass)
+{
+	resTab = new QTabWidget(mainLayoutWidget);
+	resLayout->addWidget(resTab);
+	resTab->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
+	for (int i = 0; i < 9; i++) {
+		tabs.append(new QWidget());
+		resTab->addTab(tabs[i], QString());
+	}
+	//resTab->setTabPosition(QTabWidget::TabPosition::West);
+}
+
+void Ui_filmoraClass::setupVideoUi(QWidget *filmoraClass)
+{
+	videoWidget = new QWidget(mainLayoutWidget);
+	videoLayout->addWidget(videoWidget);
+}
+
+void Ui_filmoraClass::setupTimeUi(QWidget *filmoraClass)
+{
+	timeWidget = new QWidget(mainLayoutWidget);
+	timeLayout->addWidget(timeWidget);
+}
 
 void Ui_filmoraClass::retranslateUi(QWidget *filmoraClass)
 {
@@ -196,4 +226,15 @@ void Ui_filmoraClass::retranslateUi(QWidget *filmoraClass)
 	maxButton->setText(QApplication::translate("filmoraClass", "口", nullptr));
 
 	minButton->setText(QApplication::translate("filmoraClass", "-", nullptr));
+
+	resTab->setTabText(resTab->indexOf(tabs[0]), QApplication::translate("filmoraClass", "我的素材", nullptr));
+	resTab->setTabText(resTab->indexOf(tabs[1]), QApplication::translate("filmoraClass", "素材库", nullptr));
+	resTab->setTabText(resTab->indexOf(tabs[2]), QApplication::translate("filmoraClass", "音频", nullptr));
+	resTab->setTabText(resTab->indexOf(tabs[3]), QApplication::translate("filmoraClass", "文字", nullptr));
+	resTab->setTabText(resTab->indexOf(tabs[4]), QApplication::translate("filmoraClass", "转场", nullptr));
+	resTab->setTabText(resTab->indexOf(tabs[5]), QApplication::translate("filmoraClass", "滤镜", nullptr));
+	resTab->setTabText(resTab->indexOf(tabs[6]), QApplication::translate("filmoraClass", "特效", nullptr));
+	resTab->setTabText(resTab->indexOf(tabs[7]), QApplication::translate("filmoraClass", "贴纸", nullptr));
+	resTab->setTabText(resTab->indexOf(tabs[8]), QApplication::translate("filmoraClass", "分屏", nullptr));
+
 } // retranslateUi

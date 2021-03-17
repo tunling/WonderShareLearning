@@ -81,9 +81,15 @@ void filmora::mouseMoveEvent(QMouseEvent *event)
 		}
 		else 
 		{
-			QPoint point = event->globalPos() - m_pressPoint;
-			move(pos() + point);
-			m_pressPoint = event->globalPos();
+			QRect mainRect = geometry();
+			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+			int marginTop = mouseEvent->globalY() - mainRect.y();
+			if (marginTop <= 24)
+			{
+				QPoint point = event->globalPos() - m_pressPoint;
+				move(pos() + point);
+				m_pressPoint = event->globalPos();
+			}
 		}
 	}
 	if (windowState() != Qt::WindowMaximized) 
