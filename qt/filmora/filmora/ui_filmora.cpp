@@ -21,9 +21,6 @@ void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 	mainLayout->addLayout(videoLayout, 1, 1);
 	timeLayout = new QHBoxLayout();
 	mainLayout->addLayout(timeLayout, 2, 0);
-	mainLayout->setRowStretch(0, 1);
-	mainLayout->setRowStretch(1, 25);
-	mainLayout->setRowStretch(2, 25);
 	//…Ë÷√≤Àµ•UI
 	setupMenuUi(filmoraClass);
 	retranslateUi(filmoraClass);
