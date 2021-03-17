@@ -29,8 +29,10 @@ void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 
 	timeLayout = new QHBoxLayout();
 	mainLayout->addLayout(timeLayout, 2, 0);
-
-	// 设置菜单UI
+	mainLayout->setRowStretch(0, 1);
+	mainLayout->setRowStretch(1, 25);
+	mainLayout->setRowStretch(2, 25);
+	//设置菜单UI
 	setupMenuUi(filmoraClass);
 	retranslateUi(filmoraClass);
 	QMetaObject::connectSlotsByName(filmoraClass);
