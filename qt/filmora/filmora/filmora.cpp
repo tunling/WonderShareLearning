@@ -3,9 +3,9 @@
 filmora::filmora(QWidget *parent)
 	: QWidget(parent)
 {
-	m_bIsPressed = false;
-	m_bIsResizing = false;
-	m_direction = NONE;
+	m_bIsPressed	= false;
+	m_bIsResizing	= false;
+	m_direction		= NONE;
 	ui.setupUi(this);
 }
 
@@ -38,9 +38,9 @@ bool filmora::event(QEvent *event)
 	// 双击放大、缩小
 	if (windowState() == Qt::WindowMaximized && event->type() == QMouseEvent::MouseButtonDblClick) 
 	{
-		QRect mainRect = geometry();
+		QRect mainRect			= geometry();
 		QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-		int marginTop = mouseEvent->globalY() - mainRect.y();
+		int marginTop			= mouseEvent->globalY() - mainRect.y();
 		if (marginTop <= 24) 
 		{
 			showNormal();
@@ -48,9 +48,9 @@ bool filmora::event(QEvent *event)
 	}
 	else if (windowState() != Qt::WindowMaximized && event->type() == QMouseEvent::MouseButtonDblClick)
 	{
-		QRect mainRect = geometry();
+		QRect mainRect			= geometry();
 		QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-		int marginTop = mouseEvent->globalY() - mainRect.y();
+		int marginTop			= mouseEvent->globalY() - mainRect.y();
 		if (marginTop <= 24) 
 		{
 			showMaximized();
@@ -102,11 +102,11 @@ void filmora::updateRegion(QMouseEvent *event)
 
 	if (!m_bIsResizing) 
 	{
-		mainRect = geometry();
-		marginTop = event->globalY() - mainRect.y();
-		marginBottom = mainRect.y() + mainRect.height() - event->globalY();
-		marginLeft = event->globalX() - mainRect.x();
-		marginRight = mainRect.x() + mainRect.width() - event->globalX();
+		mainRect		= geometry();
+		marginTop		= event->globalY() - mainRect.y();
+		marginBottom	= mainRect.y() + mainRect.height() - event->globalY();
+		marginLeft		= event->globalX() - mainRect.x();
+		marginRight		= mainRect.x() + mainRect.width() - event->globalX();
 		if ((marginRight >= MARGIN_MIN_SIZE && marginRight <= MARGIN_MAX_SIZE)
 			&& ((marginBottom <= MARGIN_MAX_SIZE) && marginBottom >= MARGIN_MIN_SIZE)) 
 		{
@@ -162,12 +162,12 @@ void filmora::updateRegion(QMouseEvent *event)
 
 	if (m_direction != NONE) 
 	{
-		mainRect = geometry();
-		marginTop = event->globalY() - mainRect.y();
-		marginBottom = mainRect.y() + mainRect.height() - event->globalY();
-		marginLeft = event->globalX() - mainRect.x();
-		marginRight = mainRect.x() + mainRect.width() - event->globalX();
-		m_bIsResizing = true;
+		mainRect		= geometry();
+		marginTop		= event->globalY() - mainRect.y();
+		marginBottom	= mainRect.y() + mainRect.height() - event->globalY();
+		marginLeft		= event->globalX() - mainRect.x();
+		marginRight		= mainRect.x() + mainRect.width() - event->globalX();
+		m_bIsResizing	= true;
 		resizeRegion(marginTop, marginBottom, marginLeft, marginRight);
 	}
 }// 判断放缩方向并调用更新大小函数
@@ -240,8 +240,8 @@ void filmora::resizeRegion(int marginTop, int marginBottom, int marginLeft, int 
 	}
 	else 
 	{
-		m_bIsResizing = false;
-		m_direction = NONE;
+		m_bIsResizing	= false;
+		m_direction		= NONE;
 	}
 }// 更新大小
 
@@ -249,8 +249,8 @@ void filmora::mouseReleaseEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton) 
 	{
-		m_bIsPressed = false;
-		m_bIsResizing = false;
+		m_bIsPressed	= false;
+		m_bIsResizing	= false;
 		this->setGraphicsEffect(nullptr);
 	}
 	QWidget::mouseReleaseEvent(event);
@@ -258,7 +258,7 @@ void filmora::mouseReleaseEvent(QMouseEvent *event)
 
 void filmora::leaveEvent(QEvent *event)
 {
-	m_bIsPressed = false;
-	m_bIsResizing = false;
+	m_bIsPressed	= false;
+	m_bIsResizing	= false;
 	QWidget::leaveEvent(event);
 }
