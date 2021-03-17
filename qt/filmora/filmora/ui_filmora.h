@@ -63,7 +63,6 @@ private:
 	QAction			*recordOffscreenAction;
 	// TODO
 
-
 	QPushButton		*editMenuButton;
 
 	QPushButton		*cutMenuButton;
