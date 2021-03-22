@@ -11,6 +11,7 @@
 #include <QtWidgets/QBoxlayout>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QTabwidget>
+#include <QtWidgets/QSplitter>
 #include <Qdesktopwidget>
 #include <QPoint>
 #include <QKeyEvent>
@@ -27,16 +28,20 @@ private:
 	QWidget				*mainLayoutWidget;
 	// 菜单布局
 	QHBoxLayout			*menuLayout;
-	QHBoxLayout			*resAndVideoHLayout;
+	QHBoxLayout			*workSpaceLayout;
+
+	QSplitter			*mainSplitter;
+	QSplitter			*resAndVideoSplitter;
 	// 资源管理器布局
-	QGridLayout			*resLayout;
+	QHBoxLayout			*resLayout;
 	QTabWidget			*resTab;
 	QVector<QWidget*>	tabs;
-	// 视频播放器布局
-	QGridLayout			*videoLayout;
+	QVector<QSplitter*> tab_splitters;
+
+	QHBoxLayout			*videoLayout;
 	QWidget				*videoWidget;
 	// 时间线布局	
-	QGridLayout			*timeLayout;
+	QHBoxLayout			*timeLayout;
 	QWidget				*timeWidget;
 	// 软件logo
 	QLabel				*logo;

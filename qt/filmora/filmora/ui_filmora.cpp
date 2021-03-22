@@ -9,38 +9,33 @@ void Ui_filmoraClass::setupUi(QWidget *filmoraClass)
 	filmoraClass->setMaximumSize(QSize(16777215, 16777215));
 	
 	// 设置基础布局
-	mainLayoutWidget	= new QWidget(filmoraClass);
-	mainLayout			= new QVBoxLayout(mainLayoutWidget);
+	mainLayout			= new QVBoxLayout();
 	filmoraClass->setLayout(mainLayout);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
-	mainLayout->setStretch(0, 1);
-	mainLayout->setStretch(1, 25);
-	mainLayout->setStretch(2, 25);
 
+	mainLayoutWidget	= new QWidget(filmoraClass);
+	mainLayout->addWidget(mainLayoutWidget);
+	
 	menuLayout	= new QHBoxLayout();
 	mainLayout->addLayout(menuLayout);
-	setupMenuUi(filmoraClass);	//设置菜单UI
 	menuLayout->setSpacing(0);
+	setupMenuUi(filmoraClass);	//设置菜单UI
 	
-	resAndVideoHLayout = new QHBoxLayout();
-	mainLayout->addLayout(resAndVideoHLayout);
-	resAndVideoHLayout->setStretch(0, 1);
-	resAndVideoHLayout->setStretch(1, 1);
+	workSpaceLayout = new QHBoxLayout();
+	mainLayout->addLayout(workSpaceLayout);
 
-	resLayout	= new QGridLayout();
-	resAndVideoHLayout->addLayout(resLayout);
+	mainSplitter = new QSplitter(Qt::Vertical, nullptr);
+	workSpaceLayout->addWidget(mainSplitter);
+	mainSplitter->setOpaqueResize(false);
+	
+	resAndVideoSplitter = new QSplitter(Qt::Horizontal, mainSplitter);
+	mainSplitter->setStretchFactor(0, 1);
+	resAndVideoSplitter->setOpaqueResize(false);
+
 	setupResUi(filmoraClass);
-	
-	videoLayout = new QGridLayout();
-	resAndVideoHLayout->addLayout(videoLayout);
 	setupVideoUi(filmoraClass);
-
-	timeLayout	= new QGridLayout();
-	mainLayout->addLayout(timeLayout);
 	setupTimeUi(filmoraClass);
-
 	retranslateUi(filmoraClass);
-
 	QMetaObject::connectSlotsByName(filmoraClass);
 }// 设置UI
 
@@ -160,26 +155,30 @@ void Ui_filmoraClass::setupMenuUi(QWidget *filmoraClass)
 
 void Ui_filmoraClass::setupResUi(QWidget *filmoraClass)
 {
-	resTab = new QTabWidget(mainLayoutWidget);
+	resLayout = new QHBoxLayout();
+	resTab = new QTabWidget(resAndVideoSplitter);
 	resLayout->addWidget(resTab);
-	resTab->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
+	resAndVideoSplitter->setStretchFactor(0, 1);
 	for (int i = 0; i < 9; i++) {
-		tabs.append(new QWidget());
+		tabs.append(new QWidget(resTab));
 		resTab->addTab(tabs[i], QString());
 	}
-	//resTab->setTabPosition(QTabWidget::TabPosition::West);
 }
 
 void Ui_filmoraClass::setupVideoUi(QWidget *filmoraClass)
 {
-	videoWidget = new QWidget(mainLayoutWidget);
+	videoLayout = new QHBoxLayout();
+	videoWidget = new QWidget(resAndVideoSplitter);
 	videoLayout->addWidget(videoWidget);
+	resAndVideoSplitter->setStretchFactor(1, 2);
 }
 
 void Ui_filmoraClass::setupTimeUi(QWidget *filmoraClass)
 {
-	timeWidget = new QWidget(mainLayoutWidget);
+	timeLayout = new QHBoxLayout();
+	timeWidget = new QWidget(mainSplitter);
 	timeLayout->addWidget(timeWidget);
+	mainSplitter->setStretchFactor(1, 1);
 }
 
 void Ui_filmoraClass::retranslateUi(QWidget *filmoraClass)
