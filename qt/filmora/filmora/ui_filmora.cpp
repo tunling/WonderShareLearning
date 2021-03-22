@@ -155,13 +155,25 @@ void Ui_filmoraClass::setupMenuUi(QWidget *filmoraClass)
 
 void Ui_filmoraClass::setupResUi(QWidget *filmoraClass)
 {
-	resLayout = new QHBoxLayout();
 	resTab = new QTabWidget(resAndVideoSplitter);
-	resLayout->addWidget(resTab);
 	resAndVideoSplitter->setStretchFactor(0, 1);
 	for (int i = 0; i < 9; i++) {
 		tabs.append(new QWidget(resTab));
 		resTab->addTab(tabs[i], QString());
+
+		tabLayouts.append(new QHBoxLayout());
+		tabs[i]->setLayout(tabLayouts[i]);
+		tabLayouts[i]->setContentsMargins(0, 0, 0, 0);
+
+		tabSplitters.append(new QSplitter(Qt::Horizontal, tabs[i]));
+		tabLayouts[i]->addWidget(tabSplitters[i]);
+		tabSplitters[i]->setOpaqueResize(false);
+
+		tabDirs.append(new QWidget(tabSplitters[i]));
+		tabSplitters[i]->setStretchFactor(0, 1);
+
+		tabReses.append(new QWidget(tabSplitters[i]));
+		tabSplitters[i]->setStretchFactor(1, 5);
 	}
 }
 
@@ -169,16 +181,16 @@ void Ui_filmoraClass::setupVideoUi(QWidget *filmoraClass)
 {
 	videoLayout = new QHBoxLayout();
 	videoWidget = new QWidget(resAndVideoSplitter);
-	videoLayout->addWidget(videoWidget);
-	resAndVideoSplitter->setStretchFactor(1, 2);
+	videoWidget->setLayout(videoLayout);
+	resAndVideoSplitter->setStretchFactor(1, 12);
 }
 
 void Ui_filmoraClass::setupTimeUi(QWidget *filmoraClass)
 {
 	timeLayout = new QHBoxLayout();
 	timeWidget = new QWidget(mainSplitter);
-	timeLayout->addWidget(timeWidget);
-	mainSplitter->setStretchFactor(1, 1);
+	timeWidget->setLayout(timeLayout);
+	mainSplitter->setStretchFactor(1, 2);
 }
 
 void Ui_filmoraClass::retranslateUi(QWidget *filmoraClass)
